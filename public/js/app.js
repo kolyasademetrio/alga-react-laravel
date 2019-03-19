@@ -84648,19 +84648,20 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 var RecommendedList = function RecommendedList(_ref) {
-  var productsRecommended = _ref.productsRecommended,
-      categoriesRelationship = _ref.categoriesRelationship,
-      categories = _ref.categories,
-      filterBy = _ref.filterBy;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "recommended__products"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "recommended__categoryWrapper"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_slick__WEBPACK_IMPORTED_MODULE_1___default.a, _recommendedSliderSettings__WEBPACK_IMPORTED_MODULE_2__["settings"], productsRecommended && productsRecommended.map(function (productData) {
+  var productsRecommended = _ref.productsRecommended;
+  var showSlider = Object(_recommendedSliderSettings__WEBPACK_IMPORTED_MODULE_2__["setSliderVisibility"])(productsRecommended && productsRecommended.length, window.innerWidth);
+  var ProductsRecommendedList = productsRecommended && productsRecommended.map(function (productData) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_products_ProductSingle__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({
       key: productData.id
     }, productData));
-  }))));
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "recommended__products"
+  }, showSlider ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_slick__WEBPACK_IMPORTED_MODULE_1___default.a, _extends({}, _recommendedSliderSettings__WEBPACK_IMPORTED_MODULE_2__["settings"], {
+    className: 'recommended__categoryWrapper active'
+  }), ProductsRecommendedList) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "recommended__categoryWrapper active no_slider"
+  }, ProductsRecommendedList));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (RecommendedList);
@@ -84671,11 +84672,12 @@ var RecommendedList = function RecommendedList(_ref) {
 /*!*************************************************************************!*\
   !*** ./resources/js/components/recomended/recommendedSliderSettings.js ***!
   \*************************************************************************/
-/*! exports provided: settings */
+/*! exports provided: setSliderVisibility, settings */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSliderVisibility", function() { return setSliderVisibility; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "settings", function() { return settings; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -84684,6 +84686,19 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+var setSliderVisibility = function setSliderVisibility(childQty, windowWidth) {
+  if (childQty > 4 && windowWidth > 1199) {
+    return true;
+  } else if (childQty > 3 && windowWidth <= 1199) {
+    return true;
+  } else if (childQty > 2 && windowWidth <= 991) {
+    return true;
+  } else if (childQty > 1 && windowWidth <= 500) {
+    return true;
+  } else {
+    return false;
+  }
+};
 var settings = {
   slidesToScroll: 1,
   dots: false,
@@ -85119,8 +85134,8 @@ var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\AllData\laravel-react-2\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\AllData\laravel-react-2\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\AllData\laravel-react-3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\AllData\laravel-react-3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ }),

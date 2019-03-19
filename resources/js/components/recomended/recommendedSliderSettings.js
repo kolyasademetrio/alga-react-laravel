@@ -1,5 +1,19 @@
 import React from 'react';
 
+export const setSliderVisibility = (childQty, windowWidth) => {
+    if ( (childQty > 4 && windowWidth > 1199) ) {
+        return true;
+    } else if ( childQty > 3 && windowWidth <= 1199 ) {
+        return true;
+    } else if ( childQty > 2 && windowWidth <= 991 ) {
+        return true;
+    } else if ( childQty > 1 && windowWidth <= 500 ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export const settings = {
     slidesToScroll: 1,
     dots: false,

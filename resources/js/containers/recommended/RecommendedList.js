@@ -12,7 +12,8 @@ const getVisibleProducts = (productsRecommended, filterBy, catsRelation, categor
 
 const mapStateToProps = ({filter}, ownProps) => {
 
-    const productsRecommended = ownProps.productsList && ownProps.productsList.filter(product => product.is_reccomended == 1);
+    const productsRecommended = ownProps.productsList &&
+        ownProps.productsList.filter(product => product.is_reccomended == 1);
     
     return {
         filterBy: filter.filterBy,
