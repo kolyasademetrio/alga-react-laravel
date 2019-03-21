@@ -17,7 +17,8 @@ function getCategoryProductRelations(categoriesRelationship){
 }
 
 const mapStateToProps = ({ products }) => ({
-    products: products.items,
+    productsList: products.items.productsList,
+    categories: products.items.categories,
     categoriesRelationship: getCategoryProductRelations( products.items.categoriesRelationship ),
     isReady: products.isReady,
 });

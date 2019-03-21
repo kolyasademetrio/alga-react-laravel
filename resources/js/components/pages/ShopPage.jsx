@@ -1,37 +1,19 @@
 import React, { Component } from 'react';
 import ProductSingle from '../products/ProductSingle';
 import { connect } from 'react-redux';
-import * as productsActions from '../../actions/products';
-import { CategoryFilters } from '../../actions/products';
-import {fetchProductsSuccess} from "../../actions/products";
+import {setProducts} from "../../actions/products";
 
 class ShopPage extends Component {
-
-    /*componentWillMount() {
-        const { setBooks } = this.props;
-        axios.get('/books.json').then(({ data }) => {
-            setBooks(data);
-        });
-    }*/
-
-    componentWillMount() {
-        this.props.fetchProducts();
-
+    componentDidMount() {
         const { setProducts } = this.props;
         axios.get('/api/products').then(({ data }) => {
             setProducts(data);
         });
     }
 
-    onFilter = (e) => {
-        const filterName = e.target.attributes.filter.nodeValue;
-
-        dispatch(setVisibilityFilter(filterName))
-    }
-
     render(){
 
-        const { products } = this.props.products;
+        const {categoriesRelationship, productsList, categories, isReady} = this.props;
 
         return (
             <div className="container woocomm__container">
@@ -57,42 +39,27 @@ class ShopPage extends Component {
 
                                         <ul className="products__categoryList" id="products__categoryList">
                                             <li className="products__categoryItem">
-                                                <span filter={CategoryFilters.SHOW_ALL}
-                                                      className="products__categoryItemLink all__categories active"
-                                                      onClick={this.onFilter}
-                                                >
+                                                <span className="products__categoryItemLink all__categories active">
                                                     Весь ассортимент
                                                 </span>
                                             </li>
                                             <li className="products__categoryItem">
-                                                <span filter={CategoryFilters.SCRUB}
-                                                      className="products__categoryItemLink"
-                                                      onClick={this.onFilter}
-                                                >
+                                                <span className="products__categoryItemLink">
                                                     Скрабы
                                                 </span>
                                             </li>
                                             <li className="products__categoryItem">
-                                                <span filter={CategoryFilters.BESTSELLER}
-                                                   className="products__categoryItemLink"
-                                                      onClick={this.onFilter}
-                                                >
+                                                <span className="products__categoryItemLink">
                                                     Хит продаж
                                                 </span>
                                             </li>
                                             <li className="products__categoryItem">
-                                                <span filter={CategoryFilters.FACE}
-                                                   className="products__categoryItemLink"
-                                                      onClick={this.onFilter}
-                                                >
+                                                <span className="products__categoryItemLink">
                                                     Косметика для лица
                                                 </span>
                                             </li>
                                             <li className="products__categoryItem">
-                                                <span filter={CategoryFilters.BODY}
-                                                      className="products__categoryItemLink"
-                                                      onClick={this.onFilter}
-                                                >
+                                                <span className="products__categoryItemLink">
                                                     Косметика для тела
                                                 </span>
                                             </li>
@@ -119,7 +86,7 @@ class ShopPage extends Component {
                                     </div>
                                     <div className="products__list">
                                         {
-                                            products.map( ( productData ) => (
+                                            productsList && productsList.map( ( productData ) => (
                                                 <ProductSingle key={productData.id} {...productData} />
                                             ))
                                         }
@@ -147,6 +114,28 @@ class ShopPage extends Component {
     }
 }
 
-const mapStateToProps = state => ({ products: state.products.productsList });
+function getCategoryProductRelations(categoriesRelationship){
+    let newRelations = [];
 
-export default connect(mapStateToProps, productsActions)(ShopPage);
+    if ( categoriesRelationship !== undefined ) {
+        for(let i=0;i<categoriesRelationship.length;i++) {
+            let o = categoriesRelationship[i];
+            if (!newRelations[o.catFilterBy]) newRelations[o.catFilterBy] = [];
+            newRelations[o.catFilterBy].push(o.productID);
+        }
+    }
+    return newRelations;
+}
+
+const mapStateToProps = ({products}) => ({
+    productsList: products.items.productsList,
+    categories: products.items.categories,
+    categoriesRelationship: getCategoryProductRelations( products.items.categoriesRelationship ),
+    isReady: products.isReady,
+});
+
+const mapDispatchToProps = dispatch => ({
+    setProducts: product => dispatch(setProducts(product)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
